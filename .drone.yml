@@ -12,7 +12,10 @@ steps:
         build-essential libfreetype6-dev libexpat1-dev
         libxcb-composite0-dev libssl-dev
         libvulkan-dev libvulkan1 libxcb-dri3-0 libxcb-dri3-dev vulkan-utils mesa-vulkan-drivers
+        xvfb libgl1-mesa-dev libgl1-mesa-glx mesa-utils
+      - scripts/xvfb_start
       - cargo test
+      - scripts/xvfb_stop
 
 trigger:
   branch:
@@ -35,12 +38,15 @@ steps:
         cmake build-essential libfreetype6-dev libexpat1-dev
         libxcb-composite0-dev libssl-dev zip
         libvulkan-dev libvulkan1 libxcb-dri3-0 libxcb-dri3-dev vulkan-utils mesa-vulkan-drivers
+        xvfb libgl1-mesa-dev libgl1-mesa-glx mesa-utils
       - rustup target install x86_64-pc-windows-gnu
       - mkdir -p .cargo
       - |
         echo '[target.x86_64-pc-windows-gnu]
         linker = "x86_64-w64-mingw32-gcc"' >> .cargo/config
+      - scripts/xvfb_start
       - cargo test --target x86_64-pc-windows-gnu
+      - scripts/xvfb_stop
 
 trigger:
   branch:
@@ -61,6 +67,7 @@ steps:
       - >
         apt-get install -y clang cmake cpio make libssl-dev lzma-dev libxml2-dev
         libvulkan-dev libvulkan1 libxcb-dri3-0 libxcb-dri3-dev vulkan-utils mesa-vulkan-drivers
+        xvfb libgl1-mesa-dev libgl1-mesa-glx mesa-utils
       - rustup target add x86_64-apple-darwin
       - mkdir -p /build
       - cd /build
@@ -87,7 +94,9 @@ steps:
         export COREAUDIO_CFLAGS='-I/System/Library/Frameworks/Kernel.framework/Headers
         -I/build/osxcross/target/SDK/MacOSX10.11.sdk/usr/include'
       - export CC=x86_64-apple-darwin15-clang
+      - scripts/xvfb_start
       - cargo test --target x86_64-apple-darwin
+      - scripts/xvfb_stop
 
 trigger:
   branch:

@@ -1,0 +1,53 @@
+#! /bin/bash
+# Starts XVFB in the background.
+#
+# This is intended to be called from a Drone CI build script (.drone.yml).
+#
+# ```yaml
+# steps:
+# - name: build
+#   image: rust:1.36
+#   commands:
+#     - source xvfb_start
+#     - cargo test
+#     - source xvfb_stop
+# ```
+xvfb_dir="/tmp/${DRONE_REPO_NAME}/${DRONE_BUILD_NUMBER}/xvfb"
+xvfb_display_file="${xvfb_dir}/xvfb.display"
+
+# Subshell prevents setting variables externally which we don't want.
+(
+  script_dir="$(dirname "$(readlink -f "${BASH_SOURCE}")")"
+
+  is_xvfb_running() {
+    local xvfb_pid_file="${1}"
+
+    if test -f "${xvfb_pid_file}"; then
+      if pgrep -F "${xvfb_pid_file}"; then
+        return 0 # true
+      fi
+    fi
+    return 1 # false
+  }
+
+  test -d "${xvfb_dir}" || mkdir -p "${xvfb_dir}"
+
+  # Don't start another Xvfb session if one is already running for this job.
+  xvfb_pid_file="${xvfb_dir}/xvfb.pid"
+  if ! is_xvfb_running "${xvfb_pid_file}" ; then
+    (cd "${xvfb_dir}" && "${script_dir}/xvfb/start.sh")
+  fi
+)
+
+# Wait for up to 5 seconds for the DISPLAY to be set
+for (( i = 0; i < 10; i++ )); do
+  [[ -s "${xvfb_display_file}" ]] && break;
+  sleep 0.5
+done
+
+export DISPLAY=:$(cat "${xvfb_display_file}")
+
+unset xvfb_display_file
+unset xvfb_dir
+
+echo "Exported DISPLAY=${DISPLAY}"

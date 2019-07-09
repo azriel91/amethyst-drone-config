@@ -1,0 +1,21 @@
+#! /bin/bash
+# Starts XVFB in the background.
+#
+# This is intended to be called from a Drone CI build script (.drone.yml).
+#
+# ```yaml
+# steps:
+# - name: build
+#   image: rust:1.36
+#   commands:
+#     - source xvfb_start
+#     - cargo test
+#     - source xvfb_stop
+# ```
+(
+  xvfb_dir="/tmp/${DRONE_REPO_NAME}/${DRONE_BUILD_NUMBER}/xvfb"
+  xvfb_pid_file="${xvfb_dir}/xvfb.pid"
+  test -f "${xvfb_pid_file}" && pkill -F "${xvfb_pid_file}" && rm -rf "${xvfb_dir}"
+)
+
+unset DISPLAY
