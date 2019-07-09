@@ -11,7 +11,7 @@ steps:
         apt-get install -y gcc pkg-config openssl libasound2-dev cmake
         build-essential libfreetype6-dev libexpat1-dev
         libxcb-composite0-dev libssl-dev
-        libvulkan-dev libvulkan1 libxcb-dri3-0 libxcb-dri3-dev vulkan-utils
+        libvulkan-dev libvulkan1 libxcb-dri3-0 libxcb-dri3-dev vulkan-utils mesa-vulkan-drivers
       - cargo test
 
 trigger:
@@ -34,7 +34,7 @@ steps:
         apt-get install -y gcc gcc-mingw-w64 pkg-config openssl libasound2-dev
         cmake build-essential libfreetype6-dev libexpat1-dev
         libxcb-composite0-dev libssl-dev zip
-        libvulkan-dev libvulkan1 libxcb-dri3-0 libxcb-dri3-dev vulkan-utils
+        libvulkan-dev libvulkan1 libxcb-dri3-0 libxcb-dri3-dev vulkan-utils mesa-vulkan-drivers
       - rustup target install x86_64-pc-windows-gnu
       - mkdir -p .cargo
       - |
@@ -60,7 +60,7 @@ steps:
       - apt-get update
       - >
         apt-get install -y clang cmake cpio make libssl-dev lzma-dev libxml2-dev
-        libvulkan-dev libvulkan1 libxcb-dri3-0 libxcb-dri3-dev vulkan-utils
+        libvulkan-dev libvulkan1 libxcb-dri3-0 libxcb-dri3-dev vulkan-utils mesa-vulkan-drivers
       - rustup target add x86_64-apple-darwin
       - mkdir -p /build
       - cd /build

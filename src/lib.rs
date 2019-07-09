@@ -30,24 +30,24 @@ mod tests {
 
     test_n!(test_0);
     test_n!(test_1);
-    test_n!(test_2);
-    test_n!(test_3);
-    test_n!(test_4);
-    test_n!(test_5);
-    test_n!(test_6);
-    test_n!(test_7);
-    test_n!(test_8);
-    test_n!(test_9);
+    // test_n!(test_2);
+    // test_n!(test_3);
+    // test_n!(test_4);
+    // test_n!(test_5);
+    // test_n!(test_6);
+    // test_n!(test_7);
+    // test_n!(test_8);
+    // test_n!(test_9);
 
-    test_n!(test_10);
-    test_n!(test_11);
-    test_n!(test_12);
-    test_n!(test_13);
-    test_n!(test_14);
-    test_n!(test_15);
-    test_n!(test_16);
-    test_n!(test_17);
-    test_n!(test_18);
-    test_n!(test_19);
+    // test_n!(test_10);
+    // test_n!(test_11);
+    // test_n!(test_12);
+    // test_n!(test_13);
+    // test_n!(test_14);
+    // test_n!(test_15);
+    // test_n!(test_16);
+    // test_n!(test_17);
+    // test_n!(test_18);
+    // test_n!(test_19);
 
 }
