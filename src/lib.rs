@@ -2,7 +2,9 @@
 mod tests {
     use amethyst::{
         core::TransformBundle,
+        input::StringBindings,
         renderer::{types::DefaultBackend, RenderEmptyBundle},
+        ui::UiBundle,
         Error, LogLevelFilter, LoggerConfig,
     };
     use amethyst_test::AmethystApplication;
@@ -18,6 +20,7 @@ mod tests {
 
                 AmethystApplication::blank()
                     .with_bundle(TransformBundle::new())
+                    .with_bundle(UiBundle::<DefaultBackend, StringBindings>::new())
                     .with_bundle(RenderEmptyBundle::<DefaultBackend>::new())
                     // .run() // segfaults
                     .run_isolated() // doesn't segfault
