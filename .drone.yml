@@ -12,7 +12,6 @@ steps:
         build-essential libfreetype6-dev libexpat1-dev
         libxcb-composite0-dev libssl-dev
         libvulkan-dev libvulkan1 libxcb-dri3-0 libxcb-dri3-dev vulkan-utils
-        linux-tools-5.0.0-15 linux-tools-5.0.0-15-generic
       - cargo test
 
 trigger:
@@ -36,7 +35,6 @@ steps:
         cmake build-essential libfreetype6-dev libexpat1-dev
         libxcb-composite0-dev libssl-dev zip
         libvulkan-dev libvulkan1 libxcb-dri3-0 libxcb-dri3-dev vulkan-utils
-        linux-tools-5.0.0-15 linux-tools-5.0.0-15-generic
       - rustup target install x86_64-pc-windows-gnu
       - mkdir -p .cargo
       - |
@@ -63,7 +61,6 @@ steps:
       - >
         apt-get install -y clang cmake cpio make libssl-dev lzma-dev libxml2-dev
         libvulkan-dev libvulkan1 libxcb-dri3-0 libxcb-dri3-dev vulkan-utils
-        linux-tools-5.0.0-15 linux-tools-5.0.0-15-generic
       - rustup target add x86_64-apple-darwin
       - mkdir -p /build
       - cd /build
