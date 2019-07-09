@@ -4,33 +4,14 @@ name: linux
 
 steps:
   - name: build
-    image: rust:1.35
+    image: rust:1.36
     commands:
       - apt-get update
       - >
         apt-get install -y gcc pkg-config openssl libasound2-dev cmake
         build-essential libfreetype6-dev libexpat1-dev
         libxcb-composite0-dev libssl-dev
-      - cargo build --release
-      - mkdir -p build/amethyst-drone-config
-      - mv target/release/amethyst-drone-config build/amethyst-drone-config
-      - cp -R resources build/amethyst-drone-config
-      - cd build/
-      - tar -czf amethyst-drone-config-linux-x86_64.tgz amethyst-drone-config
-
-  # Publish release to GitHub releases
-  - name: publish-release
-    image: plugins/github-release
-    depends_on:
-      - build
-    settings:
-      api_key:
-        from_secret: github_access_key
-      files:
-        - build/amethyst-drone-config-linux-x86_64.tgz
-    when:
-      ref:
-        - refs/tags/v*
+      - cargo test --release
 
 trigger:
   branch:
@@ -45,7 +26,7 @@ steps:
 
   # Build Arsenal runtime for Windows
   - name: build
-    image: rust:1.35
+    image: rust:1.36
     commands:
       - apt-get update
       - >
@@ -57,26 +38,7 @@ steps:
       - |
         echo '[target.x86_64-pc-windows-gnu]
         linker = "x86_64-w64-mingw32-gcc"' >> .cargo/config
-      - cargo build --target x86_64-pc-windows-gnu --release
-      - mkdir -p build/amethyst-drone-config
-      - mv target/x86_64-pc-windows-gnu/release/amethyst-drone-config.exe build/amethyst-drone-config
-      - cp -R resources build/amethyst-drone-config
-      - cd build/
-      - zip -r amethyst-drone-config-windows-x86_64.zip amethyst-drone-config
-
-  # Publish release to GitHub releases
-  - name: publish-release
-    image: plugins/github-release
-    depends_on:
-      - build
-    settings:
-      api_key:
-        from_secret: github_access_key
-      files:
-        - build/amethyst-drone-config-windows-x86_64.zip
-    when:
-      ref:
-        - refs/tags/v*
+      - cargo test --target x86_64-pc-windows-gnu --release
 
 trigger:
   branch:
@@ -90,7 +52,7 @@ name: macos
 steps:
 
   - name: build
-    image: rust:1.35
+    image: rust:1.36
     commands:
       # Install Cross-compiler toolchain
       - apt-get update
@@ -121,26 +83,7 @@ steps:
         export COREAUDIO_CFLAGS='-I/System/Library/Frameworks/Kernel.framework/Headers
         -I/build/osxcross/target/SDK/MacOSX10.11.sdk/usr/include'
       - export CC=x86_64-apple-darwin15-clang
-      - cargo build --target x86_64-apple-darwin --release
-      - mkdir -p build/amethyst-drone-config
-      - mv target/x86_64-apple-darwin/release/amethyst-drone-config build/amethyst-drone-config
-      - cp -R resources build/amethyst-drone-config
-      - cd build/
-      - tar -czf amethyst-drone-config-mac-x86_64.tgz amethyst-drone-config
-
-  # Publish release to GitHub releases
-  - name: publish-release
-    image: plugins/github-release
-    depends_on:
-      - build
-    settings:
-      api_key:
-        from_secret: github_access_key
-      files:
-        - build/amethyst-drone-config-mac-x86_64.tgz
-    when:
-      ref:
-        - refs/tags/v*
+      - cargo test --target x86_64-apple-darwin --release
 
 trigger:
   branch:
