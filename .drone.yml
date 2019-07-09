@@ -11,7 +11,9 @@ steps:
         apt-get install -y gcc pkg-config openssl libasound2-dev cmake
         build-essential libfreetype6-dev libexpat1-dev
         libxcb-composite0-dev libssl-dev
-      - cargo test --release
+        libvulkan-dev libvulkan1 libxcb-dri3-0 libxcb-dri3-dev vulkan-utils
+        linux-tools-5.0.0-15 linux-tools-5.0.0-15-generic
+      - cargo test
 
 trigger:
   branch:
@@ -33,12 +35,14 @@ steps:
         apt-get install -y gcc gcc-mingw-w64 pkg-config openssl libasound2-dev
         cmake build-essential libfreetype6-dev libexpat1-dev
         libxcb-composite0-dev libssl-dev zip
+        libvulkan-dev libvulkan1 libxcb-dri3-0 libxcb-dri3-dev vulkan-utils
+        linux-tools-5.0.0-15 linux-tools-5.0.0-15-generic
       - rustup target install x86_64-pc-windows-gnu
       - mkdir -p .cargo
       - |
         echo '[target.x86_64-pc-windows-gnu]
         linker = "x86_64-w64-mingw32-gcc"' >> .cargo/config
-      - cargo test --target x86_64-pc-windows-gnu --release
+      - cargo test --target x86_64-pc-windows-gnu
 
 trigger:
   branch:
@@ -56,7 +60,10 @@ steps:
     commands:
       # Install Cross-compiler toolchain
       - apt-get update
-      - apt-get install -y clang cmake cpio make libssl-dev lzma-dev libxml2-dev
+      - >
+        apt-get install -y clang cmake cpio make libssl-dev lzma-dev libxml2-dev
+        libvulkan-dev libvulkan1 libxcb-dri3-0 libxcb-dri3-dev vulkan-utils
+        linux-tools-5.0.0-15 linux-tools-5.0.0-15-generic
       - rustup target add x86_64-apple-darwin
       - mkdir -p /build
       - cd /build
@@ -83,7 +90,7 @@ steps:
         export COREAUDIO_CFLAGS='-I/System/Library/Frameworks/Kernel.framework/Headers
         -I/build/osxcross/target/SDK/MacOSX10.11.sdk/usr/include'
       - export CC=x86_64-apple-darwin15-clang
-      - cargo test --target x86_64-apple-darwin --release
+      - cargo test --target x86_64-apple-darwin
 
 trigger:
   branch:
